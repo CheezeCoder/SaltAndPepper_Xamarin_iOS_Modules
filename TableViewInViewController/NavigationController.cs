@@ -4,7 +4,8 @@ using UIKit;
 namespace TableViewInViewController 
 {
 	///<summary>
-	///
+	/// Navigation Controller controlls the ViewControllers which in this case there is only one.  So all we need to do is initiate the 
+	/// ViewController class to this navigation controller's view controler stack.
 	///</summary>
 	public class NavigationController : UINavigationController
 	{
