@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomOptionsPage", "Custom
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SegmentControllerFiltering", "SegmentControllerFiltering\SegmentControllerFiltering.csproj", "{BC5BED2C-1391-4EA6-9C71-1988DEA8D04A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableViewInViewController", "TableViewInViewController\TableViewInViewController.csproj", "{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -41,6 +43,14 @@ Global
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Release|iPhone.Build.0 = Release|iPhone
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Debug|iPhone.Build.0 = Debug|iPhone
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Release|iPhone.ActiveCfg = Release|iPhone
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Release|iPhone.Build.0 = Release|iPhone
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{B28D8C9D-43BF-4B60-828D-5BA3243ACDBC}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{BC5BED2C-1391-4EA6-9C71-1988DEA8D04A}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{BC5BED2C-1391-4EA6-9C71-1988DEA8D04A}.Debug|iPhone.Build.0 = Debug|iPhone
 		{BC5BED2C-1391-4EA6-9C71-1988DEA8D04A}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
