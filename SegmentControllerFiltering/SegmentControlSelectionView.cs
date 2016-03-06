@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UIKit;
 
 namespace SegmentControllerFiltering
@@ -11,6 +12,19 @@ namespace SegmentControllerFiltering
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
+		/// <summary>
+		/// This list acts as a fake local data source for one of our 2 segment controller states.  
+		/// </summary>
+		private readonly List<string> segmentValuesOne 	= new List<string>(){"One", "Two", "Three", "Four"};
+		/// <summary>
+		/// This list acts as a fake local data source for one of our 2 segment controller states.
+		/// </summary>
+		private readonly List<string> segmentValuesTwo 	= new List<string>(){"Six", "Seven", "Eight"};
+		/// <summary>
+		/// This list represents the current state of the segment controller by taking on either segmentvalueOne or segmentValueTwo's
+		/// properties. 
+		/// </summary>
+		private List<string> currentSegmentController;
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -27,8 +41,9 @@ namespace SegmentControllerFiltering
 		/// </summary>
 		public SegmentControlSelectionView ()
 		{
+			currentSegmentController = segmentValuesOne;
 			addSegmentSections ();
-			this.SelectedSegment = 0;
+			SelectedSegment = 0;
 		}
 		//========================================================================================================================================
 		//  PUBLIC OVERRIDES
@@ -40,27 +55,34 @@ namespace SegmentControllerFiltering
 		/// </summary>
 		public override void LayoutSubviews ()
 		{
-			this.ValueChanged += (sender, e) => {
-				var selectedSegmentId = (sender as UISegmentedControl).SelectedSegment;
-				valueChanged(this, e);
-			};
+			ValueChanged += (sender, e)=> valueChanged(this, e);
 			base.LayoutSubviews ();
 		}
 		//========================================================================================================================================
 		//  PUBLIC METHODS
 		//========================================================================================================================================
+		/// <summary>
+		/// This is another method of the SegmentControlSelectionView's api.  This will allow external controller classes or parents to 
+		/// update the segment controller.
+		/// </summary>
+		public void updateSegmentController(bool choice)
+		{
+			currentSegmentController = choice ? segmentValuesOne : segmentValuesTwo;
+			addSegmentSections ();
+		}
 		//========================================================================================================================================
 		//  PRIVATE METHODS
 		//========================================================================================================================================
 		/// <summary>
-		/// Adds the segment sections.
+		/// Adds the segment sections. Loops through the current segment control state List and updates the segment Controller
+		/// accordingly. 
 		/// </summary>
 		private void addSegmentSections()
 		{
-			InsertSegment ("One", 	0, true);
-			InsertSegment ("Two", 	1, true);
-			InsertSegment ("Three", 2, true);
-			InsertSegment ("Four", 	3, true);
+			RemoveAllSegments ();
+			foreach (string segment in currentSegmentController) {
+				InsertSegment (segment, NumberOfSegments, true);
+			}
 		}
 	}
 }

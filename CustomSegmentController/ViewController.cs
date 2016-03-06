@@ -129,6 +129,7 @@ namespace CustomSegmentController
 		/// <param name="args">Arguments.</param>
 		private void changeBackgroundColor(object sender, EventArgs args)
 		{
+			Console.WriteLine ((sender as UISegmentedControl).SelectedSegment);
 			switch ((sender as UISegmentedControl).SelectedSegment) {
 			case 0: 
 				this.View.BackgroundColor = UIColor.White;
