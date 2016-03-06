@@ -91,6 +91,13 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="NavigationController.cs" />
+    <Compile Include="TableViewSource.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="TableViewCell.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <BundleResource Include="Resources\120px-Icon-helmet.png" />
+  </ItemGroup>
 </Project>

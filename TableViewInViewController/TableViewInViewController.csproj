@@ -99,4 +99,7 @@
     <Compile Include="TableViewSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <BundleResource Include="Resources\120px-Icon-helmet.png" />
+  </ItemGroup>
 </Project>
