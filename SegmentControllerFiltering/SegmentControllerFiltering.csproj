@@ -94,6 +94,7 @@
     <Compile Include="NavigationController.cs" />
     <Compile Include="SegmentControlSelectionView.cs" />
     <Compile Include="ViewController.cs" />
+    <Compile Include="OptionsViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

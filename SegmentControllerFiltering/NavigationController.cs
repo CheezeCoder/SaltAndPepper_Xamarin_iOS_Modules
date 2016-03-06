@@ -12,6 +12,7 @@ namespace SegmentControllerFiltering
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
 		private readonly ViewController viewController;
+		private readonly OptionsViewController optionsController;
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -23,14 +24,16 @@ namespace SegmentControllerFiltering
 		/// </summary>
 		public NavigationController ()
 		{
-			viewController = new ViewController ();
+			viewController 		= new ViewController ();
+			optionsController 	= new OptionsViewController ();
 		}
 		//========================================================================================================================================
 		//  PUBLIC OVERRIDES
 		//========================================================================================================================================
 		public override void ViewDidLoad ()
 		{
-			SetViewControllers(new UIViewController[]{ viewController }, true);
+			SetViewControllers(new UIViewController[]{ viewController  }, true);
+			viewController.buttonSelected += (object sender, EventArgs e) => this.PushViewController(optionsController, true);
 			base.ViewDidLoad ();
 		}
 		//========================================================================================================================================

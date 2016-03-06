@@ -36,16 +36,33 @@ namespace SegmentControllerFiltering
 		/// </summary>
 		private readonly int iosDefaultMargin 	= 15;
 		/// <summary>
-		/// The UINavigation item necessary to display a title in our UINavigationBar
-		/// </summary>
-		private UINavigationItem navItem;
-		/// <summary>
 		/// A small container to represent the needed y offset in pts for our segmentController to position where we want it.
 		/// </summary>
 		private float segmentControllerBarYoffset;
+		/// <summary>
+		/// Button object to take the user to the options view controller.
+		/// </summary>
+		private UIBarButtonItem optionsButton;
+		/// <summary>
+		/// The text to display for the optionsButton.
+		/// </summary>
+		private readonly string optionsButtonText 		= "Options";
+		/// <summary>
+		/// The text to display in the navigation bar for this controller.
+		/// </summary>
+		private readonly string contentViewTitleText 		= "Content";
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
+		/// <summary>
+		/// The api handler to alert any listeners that the "options" button has been pressed.
+		/// </summary>
+		public event EventHandler buttonSelected;
+		/// <summary>
+		/// This boolean will dictate what text appears on the label for this controller and acts as a logic
+		/// director for the our "fake" database information.
+		/// </summary>
+		private bool choice = true;
 		//========================================================================================================================================
 		//  Constructor
 		//========================================================================================================================================
@@ -68,6 +85,8 @@ namespace SegmentControllerFiltering
 		/// </summary>
 		public override void ViewDidLoad ()
 		{
+			this.optionsButton 	= new UIBarButtonItem(this.optionsButtonText,UIBarButtonItemStyle.Plain, buttonSelected);
+			this.NavigationItem.SetLeftBarButtonItem(optionsButton, true);
 			this.View.Add(this.toolBar);
 			this.toolBar.AddSubview (this.segController);
 			this.Title = "Segment Controller Filtering";
@@ -89,17 +108,26 @@ namespace SegmentControllerFiltering
 		/// </summary>
 		public override void ViewDidLayoutSubviews ()
 		{
-			this.segmentControllerBarYoffset 	= (float)UIApplication.SharedApplication.StatusBarFrame.Height + 44;
-			this.toolBar.Frame  				= new CoreGraphics.CGRect (0, this.segmentControllerBarYoffset, this.View.Bounds.Width, this.defaultUIToolBarHeight + (this.iosDefaultPadding*2));
+			this.segmentControllerBarYoffset 	= (float)UIApplication.SharedApplication.StatusBarFrame.Height + defaultNavigationBarHeight;
+			this.toolBar.Frame  			= new CoreGraphics.CGRect (0, this.segmentControllerBarYoffset, this.View.Bounds.Width, this.defaultUIToolBarHeight + (this.iosDefaultPadding*2));
 			this.toolBar.AutoresizingMask 		= UIViewAutoresizing.FlexibleWidth;
-			this.segController.Frame 			= new CoreGraphics.CGRect (0, 0, this.View.Bounds.Width - iosDefaultMargin * 2, this.defaultUIToolBarHeight);
-			this.segController.Center 			= new CoreGraphics.CGPoint (this.toolBar.Frame.Size.Width / 2, this.toolBar.Frame.Size.Height / 2);
-			this.segController.AutoresizingMask = UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin;
+			this.segController.Frame 		= new CoreGraphics.CGRect (0, 0, this.View.Bounds.Width - iosDefaultMargin * 2, this.defaultUIToolBarHeight);
+			this.segController.Center 		= new CoreGraphics.CGPoint (this.toolBar.Frame.Size.Width / 2, this.toolBar.Frame.Size.Height / 2);
+			this.segController.AutoresizingMask 	= UIViewAutoresizing.FlexibleLeftMargin | UIViewAutoresizing.FlexibleRightMargin;
 			base.ViewDidLayoutSubviews ();
 		}
 		//========================================================================================================================================
 		//  PUBLIC METHODS
 		//========================================================================================================================================
+		/// <summary>
+		/// This is the only method for the api of this controller class and it allows our so called "logic director" to be set
+		/// accordingly.  This updates our boolean for the class.  
+		/// </summary>
+		/// <param name="choice">true or false (true displays option 1, false displays option 2)</param>
+		public void updateContent(bool choice)
+		{
+			this.choice = choice;
+		}
 		//========================================================================================================================================
 		//  PRIVATE METHODS
 		//========================================================================================================================================
