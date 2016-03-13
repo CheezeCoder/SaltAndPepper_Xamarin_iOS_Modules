@@ -37,12 +37,12 @@ namespace CustomCellTableView
 			tableView 			= new UITableView ();
 			tableView.RowHeight 		= UITableView.AutomaticDimension;
 			tableView.EstimatedRowHeight 	= 86;
-			dataSource 		= new List<List<string>> (){ 
+			dataSource 			= new List<List<string>> (){ 
 				new List<string>(){ "Header One", "Subtitle One", "Jan", "01", "12:00" },
 				new List<string>(){ "Header Two", "Subtitle Two", "Feb", "02", "13:00" },
 				new List<string>(){ "Header Three", "Subtitle Three", "Mar", "03", "14:00" }
 			};
-			tableView.Source 	= new TableViewSource (dataSource);
+			tableView.Source 		= new TableViewSource (dataSource);
 		}
 			
 		//========================================================================================================================================
@@ -53,8 +53,8 @@ namespace CustomCellTableView
 		/// </summary>
 		public override void ViewDidLoad ()
 		{
-			Title = "Table View in View Controller";
-			View.BackgroundColor = UIColor.White;
+			Title 			= "Custom Size and Content Cell in Table View";
+			View.BackgroundColor 	= UIColor.White;
 			View.AddSubview (tableView);
 			base.ViewDidLoad ();
 		}
@@ -64,7 +64,7 @@ namespace CustomCellTableView
 		/// </summary>
 		public override void ViewDidLayoutSubviews ()
 		{
-			tableView.Frame = View.Bounds;
+			tableView.Frame 	= View.Bounds;
 			base.ViewDidLayoutSubviews ();
 		}
 		//========================================================================================================================================

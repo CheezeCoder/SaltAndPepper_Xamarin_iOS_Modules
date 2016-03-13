@@ -5,7 +5,8 @@ using UIKit;
 namespace CustomCellTableView 
 {
 	///<summary>
-	///
+	/// Our subclassed table view source.  We need this subclass to setup our table cell properly.  Handles establishing our cells
+	/// from the injected data source.
 	///</summary>
 	public class TableViewSource : UITableViewSource
 	{
@@ -55,7 +56,10 @@ namespace CustomCellTableView
 		/// This method will build our cell for us.  It dequeues a cell with the identifier we declared as a private member of this class
 		/// or if we have not done this yet we create a new cell with the given identifier.  We then set the label of the cell
 		/// to whatever is in our data source.  To get the right index we simply use a catagory of indexPath which is row to indicate
-		/// what index of our List<string> to get the tile from.  Then we return the cell for use. 
+		/// what index of our List<List<string>> to get the tile from. We then just use magic numbers in this case to get the correct
+		/// index for each part of the cell.  This would normally be enumerated or setup in another way.  We then access our subclassed
+		/// cell which has updateCell as part of its public API to update the cell with the correct data from our data source.
+		/// Then we return the cell for use. 
 		/// </summary>
 		/// <returns>The cell.</returns>
 		/// <param name="tableView">Table view.</param>
