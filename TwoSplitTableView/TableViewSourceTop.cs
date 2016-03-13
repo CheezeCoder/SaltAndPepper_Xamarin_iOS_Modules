@@ -11,6 +11,7 @@ namespace TwoSplitTableView
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
+		private readonly string cellIdentifier = "inputCell";
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -31,12 +32,24 @@ namespace TwoSplitTableView
 
 		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
-			throw new NotImplementedException ();
+			var cell = tableView.DequeueReusableCell (cellIdentifier);
+
+			cell = cell ?? new UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);
+
+			var tf = new UITextField (cell.Bounds);
+			cell.AddSubview (tf);
+			cell.AccessoryView = new UIButton (UIButtonType.ContactAdd);
+
+			return cell;
+				
+
+
+
 		}
 
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
-			throw new NotImplementedException ();
+			return 1;
 		}
 
 		#endregion
