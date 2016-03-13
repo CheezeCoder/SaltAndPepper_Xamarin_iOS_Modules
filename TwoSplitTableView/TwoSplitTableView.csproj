@@ -93,6 +93,8 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="NavigationController.cs" />
     <Compile Include="ViewController.cs" />
+    <Compile Include="TableViewSourceTop.cs" />
+    <Compile Include="TableViewSourceBottom.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
