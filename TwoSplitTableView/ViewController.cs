@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UIKit;
 
 namespace TwoSplitTableView 
@@ -27,8 +28,10 @@ namespace TwoSplitTableView
 		/// 
 		/// </summary>
 		private readonly TableViewSourceBottom bottomSource;
-		private readonly string title = "Two Split Table View";
-		private readonly float defaultCellHeight =43;
+		private readonly string title 			= "Two Split Table View";
+		private readonly float defaultCellHeight 	= 44;
+		private readonly List<string> dataSource;
+
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -40,15 +43,22 @@ namespace TwoSplitTableView
 		/// </summary>
 		public ViewController () 
 		{
-			tableViewTop 	= new UITableView ();
-			tableViewBottom = new UITableView ();
-			topSource 	= new TableViewSourceTop ();
-			bottomSource 	= new TableViewSourceBottom ();
+			dataSource = new List<string> () {
+				"Data Object One",
+				"Data Object Two",
+				"Data Object Three",
+				"Data Object Four",
+				"Data Object Five"
+			};
 
-			tableViewTop.Source = topSource;
-			tableViewTop.ScrollEnabled = false;
-			// Makes it so that the view of the tableView starts where the navbar ends.  Specific to a scroll view.  
-			AutomaticallyAdjustsScrollViewInsets = false;
+
+			topSource 	= new TableViewSourceTop ();
+			bottomSource 	= new TableViewSourceBottom (dataSource);
+			tableViewTop 	= new UITableView ();
+
+			tableViewBottom = new UITableView (CoreGraphics.CGRect.Empty, UITableViewStyle.Grouped);
+
+
 
 
 
@@ -59,20 +69,40 @@ namespace TwoSplitTableView
 		//========================================================================================================================================
 		public override void ViewDidLoad ()
 		{
+			AutomaticallyAdjustsScrollViewInsets 	= false;
+			tableViewBottom.Source 			= bottomSource;
+			tableViewTop.Source 			= topSource;
+			tableViewTop.BackgroundColor = "CECED2".ToUIColor ();
+			tableViewTop.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
+			tableViewTop.SeparatorInset = UIEdgeInsets.Zero;
+			tableViewTop.LayoutMargins = UIEdgeInsets.Zero;
+		
+
+
+			//Remove unused table cells below existing cells.
+			tableViewBottom.TableFooterView 	= new UIView ();
+
+			bottomSource.cellDidPress += updateTopTable;
+
+
 			View.AddSubview (tableViewTop);
 			View.AddSubview (tableViewBottom);
-			tableViewTop.TranslatesAutoresizingMaskIntoConstraints 		= false;
-			tableViewBottom.TranslatesAutoresizingMaskIntoConstraints 	= false;
-			setViewConstraints ();
 			base.ViewDidLoad ();
 		}
 
 		public override void ViewDidLayoutSubviews ()
 		{
-			Title 				= title;
-			View.BackgroundColor 		= UIColor.White;
-			tableViewTop.BackgroundColor 	= UIColor.Blue;
-			tableViewBottom.BackgroundColor = UIColor.Green;
+			// Makes it so that the view of the tableView starts where the navbar ends.  Specific to a scroll view. 
+			AutomaticallyAdjustsScrollViewInsets				= false;
+			Title 								= title;
+			View.BackgroundColor 						= UIColor.White;
+			tableViewTop.BackgroundColor 					= UIColor.White;
+			tableViewBottom.BackgroundColor 				= "EFEFF4".ToUIColor ();
+
+			tableViewTop.ScrollEnabled 					= false;
+			tableViewTop.TranslatesAutoresizingMaskIntoConstraints		= false;
+			tableViewBottom.TranslatesAutoresizingMaskIntoConstraints 	= false;
+			setViewConstraints ();
 
 			base.ViewDidLayoutSubviews ();
 		}
@@ -96,5 +126,14 @@ namespace TwoSplitTableView
 			tableViewBottom.LeadingAnchor.ConstraintEqualTo (View.LeadingAnchor).Active 		= true;
 			tableViewBottom.TrailingAnchor.ConstraintEqualTo (View.TrailingAnchor).Active 		= true;
 		}
+
+		private void  updateTopTable(string contents)
+		{
+			topSource.updateField (contents);
+			tableViewTop.ReloadData ();
+
+		}
+
+
 	}
 }

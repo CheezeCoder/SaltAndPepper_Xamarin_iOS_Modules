@@ -1,20 +1,18 @@
 ﻿using System;
 using UIKit;
+using System.Collections.Generic;
 
 namespace TwoSplitTableView 
 {
 	///<summary>
 	///
 	///</summary>
-	public class TableViewSourceTop : UITableViewSource
+	public class DummyTableViewController : UITableViewController
 	{
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
-		private readonly string cellIdentifier = "inputCell";
-		private string cellStateData =""; 
-		private float cellPadding = 15;
-		private string cellPrefix = "Data Response: ";
+		private readonly List<string> dataSource;
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -22,69 +20,34 @@ namespace TwoSplitTableView
 		//  Constructor
 		//========================================================================================================================================
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TwoSplitTableView.TableViewSourceTop"/> class.
+		/// Initializes a new instance of the <see cref="TwoSplitTableView.DummyTableViewController"/> class.
 		/// </summary>
-		public TableViewSourceTop ()
-		{	
+		public DummyTableViewController () : base(UITableViewStyle.Grouped)
+		{
+			dataSource = new List<string> () {
+				"Data Object One",
+				"Data Object Two",
+				"Data Object Three",
+				"Data Object Four",
+				"Data Object Five"
+			};
+
 		}
 		//========================================================================================================================================
 		//  PUBLIC OVERRIDES
 		//========================================================================================================================================
-		#region implemented abstract members of UITableViewSource
-
-		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
+		public override void ViewDidLoad ()
 		{
-			var cell = tableView.DequeueReusableCell (cellIdentifier);
-
-			cell = cell ?? new UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);
-
-			if (cell.Subviews.Length > 0) {
-				foreach (UIView s in cell.Subviews) {
-					s.RemoveFromSuperview ();
-				}
-			}
-//			cell.TextLabel.Text = cellStateData;
-//			cell.TextLabel.TextColor = UIColor.Red;
-
-			var stringLength = cellPrefix.StringSize (UIFont.SystemFontOfSize (UIFont.SystemFontSize)).Width;
-			var textField = new UILabel(new CoreGraphics.CGRect(cellPadding, 0, stringLength, cell.Bounds.Height));
-			textField.Text = cellPrefix;
-			textField.Font = UIFont.SystemFontOfSize(UIFont.SystemFontSize);
-			textField.TextColor = UIColor.LightGray;
-			cell.AddSubview (textField);
-
-			var label = new UILabel (new CoreGraphics.CGRect (textField.Frame.Width + (cellPadding * 2), 0, cell.Frame.Width - stringLength, cell.Frame.Height));
-			label.Text = cellStateData;
-			label.TextColor = UIColor.Red;
-
-			cell.AddSubview (label);
-
-			cell.SeparatorInset 	= UIEdgeInsets.Zero;
-			cell.LayoutMargins 	= UIEdgeInsets.Zero;
-			return cell;
-				
-
-
-
+			TableView.SeparatorStyle = UITableViewCellSeparatorStyle.SingleLine;
+			TableView.SeparatorColor = UIColor.Green;
+			TableView.Source = new TableViewSourceBottom (dataSource);
+			base.ViewDidLoad ();
 		}
-
-		public override nint RowsInSection (UITableView tableview, nint section)
-		{
-			return 1;
-		}
-
-		#endregion
 		//========================================================================================================================================
 		//  PUBLIC METHODS
 		//========================================================================================================================================
-		public void updateField(string contents)
-		{
-			cellStateData = contents;
-		}
 		//========================================================================================================================================
 		//  PRIVATE METHODS
 		//========================================================================================================================================
-
-
 	}
 }

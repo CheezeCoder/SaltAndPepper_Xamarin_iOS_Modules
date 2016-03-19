@@ -36,6 +36,8 @@ namespace TwoSplitTableView
 		public override void ViewDidLoad ()
 		{
 			SetViewControllers (new UIViewController[]{ viewController }, true);
+
+
 			base.ViewDidLoad ();
 		}
 		//========================================================================================================================================
