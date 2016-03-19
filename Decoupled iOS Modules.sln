@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableViewInViewController",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCellTableView", "CustomCellTableView\CustomCellTableView.csproj", "{EE910D9F-E0D9-4968-9566-954B65CD9FF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFieldTokenRecognitionAndHandling", "TextFieldTokenRecognitionAndHandling\TextFieldTokenRecognitionAndHandling.csproj", "{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -37,6 +39,14 @@ Global
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Release|iPhone.Build.0 = Release|iPhone
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Debug|iPhone.Build.0 = Debug|iPhone
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Release|iPhone.ActiveCfg = Release|iPhone
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Release|iPhone.Build.0 = Release|iPhone
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{6D41AC5A-1023-4E41-A7CD-991E14CB8C5F}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Debug|iPhone.Build.0 = Debug|iPhone
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
