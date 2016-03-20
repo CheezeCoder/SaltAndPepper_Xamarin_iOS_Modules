@@ -2,9 +2,9 @@
 
 namespace TwoSplitTableViewExtended
 {
-	public class ViewController
+	public class TableViewSourceTop
 	{
-		public ViewController ()
+		public TableViewSourceTop ()
 		{
 		}
 	}
