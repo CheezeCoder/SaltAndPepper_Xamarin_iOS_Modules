@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomCellTableView", "Cust
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoSplitTableView", "TwoSplitTableView\TwoSplitTableView.csproj", "{206A62D9-4442-410F-8867-2854D6DFDF81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoSplitTableViewExtended", "TwoSplitTableViewExtended\TwoSplitTableViewExtended.csproj", "{7A000128-82A4-421F-B5A8-15E9D9FE03FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -47,6 +49,14 @@ Global
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Release|iPhone.Build.0 = Release|iPhone
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Debug|iPhone.Build.0 = Debug|iPhone
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Release|iPhone.ActiveCfg = Release|iPhone
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Release|iPhone.Build.0 = Release|iPhone
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{7A000128-82A4-421F-B5A8-15E9D9FE03FD}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Debug|iPhone.Build.0 = Debug|iPhone
 		{B09EA0C8-34E2-43FB-BE76-65D59583B5EE}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
