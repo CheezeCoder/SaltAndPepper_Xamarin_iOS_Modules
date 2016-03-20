@@ -5,13 +5,26 @@ using Foundation;
 
 namespace UIKit
 {
+	/// <summary>
+	/// Extension Class that allows us to add some extra functionality to our specific app.
+	/// </summary>
 	public static class UIColorExtensions
 	{
+		/// <summary>
+		/// The iOS default background color for Tables
+		/// </summary>
+		/// <returns>The user interface table view backgound.</returns>
+		/// <param name="color">Color.</param>
 		public static UIColor DefaultUITableViewBackgound(this UIColor color)
 		{
 			return UIColor.FromRGB (239, 239, 244);
 		}
 
+		/// <summary>
+		/// The iOS default Table header text color.
+		/// </summary>
+		/// <returns>The user interface table view header text color.</returns>
+		/// <param name="color">Color.</param>
 		public static UIColor DefaultUITableViewHeaderTextColor(this UIColor color)
 		{
 			return UIColor.FromRGB (109, 109, 114);
@@ -24,6 +37,9 @@ namespace UIKit
 
 namespace System
 {
+	/// <summary>
+	/// Some handy extensions by https://gist.github.com/HeathHopkins/8289364
+	/// </summary>
 	public static class ExtensionMethods
 	{
 		public static UIColor ToUIColor(this string hexString)
