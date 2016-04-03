@@ -96,6 +96,8 @@
     <Compile Include="TableViewSourceTop.cs" />
     <Compile Include="ViewController.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FakeDatabase.cs" />
+    <Compile Include="UITableViewCellC.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

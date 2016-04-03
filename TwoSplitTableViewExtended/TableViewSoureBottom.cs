@@ -5,6 +5,95 @@ using System.Globalization;
 
 namespace TwoSplitTableViewExtended 
 {
+	public struct TableViewRowType{
+		public static TableViewRowType A = new TableViewRowType ("cellTypeA", "typeA");
+		public static TableViewRowType B = new TableViewRowType ("cellTypeB", "typeB");
+		public static TableViewRowType C = new TableViewRowType ("cellTypeC", "typeC");
+
+		public static List<TableViewRowType> AllTypes = new List<TableViewRowType>(){A, B, C};
+
+		private TableViewRowType (string id, string key)
+		{
+			ReuseID = id;
+			Key = key;
+		}
+
+		public string ReuseID { get; set; }
+		public string Key { get; set; }
+	}
+
+//	public class TableViewRowType{
+//
+//		public static TableViewRowType A = new TableViewRowType ("cellTypeA", "typeA");
+//		public static TableViewRowType B = new TableViewRowType ("cellTypeB", "typeB");
+//		public static TableViewRowType C = new TableViewRowType ("cellTypeC", "typeC");
+//
+//		private TableViewRowType (string id, string key)
+//		{
+//			ReuseID = id;
+//			Key = key;
+//		}
+//
+//		public string ReuseID { get; set; }
+//		public string Key { get; set; }
+//	}
+
+	public class TableViewSectionType{
+		public static TableViewSectionType A = new TableViewSectionType("Setion A", "sectionTypeA");
+		public static TableViewSectionType B = new TableViewSectionType("Setion B", "sectionTypeB");
+		public static TableViewSectionType C = new TableViewSectionType("Setion C", "sectionTypeC");
+
+		public static List<TableViewSectionType> AllTypes = new List<TableViewSectionType>(){A, B, C};
+
+		private TableViewSectionType(string title, string key)
+		{
+			Key = key;
+			Title = title;
+		}
+
+		public string Key {get; set;}
+		public string Title{get; set;}
+	}
+
+
+	public struct TableViewSection {
+		public TableViewSectionType type;
+		public List<TableViewRow> rows;
+
+		public TableViewSection(TableViewSectionType t)
+		{
+			type = t;
+			rows = new List<TableViewRow> ();
+		}
+	}
+
+	public abstract class TableViewRow : UITableViewCell
+	{
+		private UITableViewCell cell;
+		private TableViewRowType type;
+
+		public TableViewRow(TableViewRowType type)
+		{
+			this.type = type;
+			ContentView.Frame = DefaultiOSDimensions.CellFrame ();
+		}
+
+		public TableViewRowType Type{
+			get{return type;}
+		}
+
+		public UITableViewCell Cell {
+			get { return cell; }
+			protected set{
+				cell = value;
+			}
+		}
+
+		public abstract void SetColor(UIColor c1, UIColor c2 = null, UIColor c3 = null);
+	}
+
+
+
 	/// <summary>
 	/// Delgate for our cell interaction.  Allows the string contents of the selected cell to be passed to a receiving 
 	/// method.  In this case the parent View Controller for the Table View this source belongs to.  
@@ -21,7 +110,8 @@ namespace TwoSplitTableViewExtended
 		/// <summary>
 		/// The data.
 		/// </summary>
-		private readonly List<string> data;
+		private readonly List<TableViewSection> tableData;
+		private List<List<List<UIColor>>> data;
 		/// <summary>
 		/// Bottom table view cell unique identifier.
 		/// </summary>
@@ -44,8 +134,9 @@ namespace TwoSplitTableViewExtended
 		/// <summary>
 		/// Initializes a new instance of the <see cref="TwoSplitTableViewExtended.TableViewSourceBottom"/> class. Sets our data.
 		/// </summary>
-		public TableViewSourceBottom (List<string> data)
+		public TableViewSourceBottom (List<TableViewSection> tData, List<List<List<UIColor>>> data)
 		{	
+			this.tableData = tData;
 			this.data = data;
 		}
 		//========================================================================================================================================
@@ -61,12 +152,22 @@ namespace TwoSplitTableViewExtended
 		/// <param name="indexPath">Index path.</param>
 		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
-			var cell = tableView.DequeueReusableCell (bottomCellIdentifier);
-			cell = cell ?? new UITableViewCell (UITableViewCellStyle.Default, bottomCellIdentifier);
+			var cell = tableView.DequeueReusableCell (tableData [indexPath.Section].rows [indexPath.Row].Type.ReuseID) ?? tableData [indexPath.Section].rows [indexPath.Row].Cell;
 
-			cell.TextLabel.Text = data [indexPath.Row];
+			var c1 = data [indexPath.Section] [indexPath.Row] [0];
+			var c2 = data [indexPath.Section] [indexPath.Row].Count > 1 ? data [indexPath.Section] [indexPath.Row] [1] : null;
+			var c3 = data [indexPath.Section] [indexPath.Row].Count > 2 ? data [indexPath.Section] [indexPath.Row] [2] : null;
+
+			if (cell is TableViewRow) {
+				(cell as TableViewRow).SetColor (c1, c2, c3);
+			}
 
 			return cell;
+		}
+
+		public override nint NumberOfSections (UITableView tableView)
+		{
+			return tableData.Count;
 		}
 
 		/// <summary>
@@ -77,7 +178,8 @@ namespace TwoSplitTableViewExtended
 		/// <param name="section">Section.</param>
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
-			return data.Count;
+			int s = (int)section;
+			return tableData[s].rows.Count;
 		}
 
 		/// <summary>
@@ -88,8 +190,7 @@ namespace TwoSplitTableViewExtended
 		/// <param name="section">Section.</param>
 		public override string TitleForHeader (UITableView tableView, nint section)
 		{
-
-			return sectionTitle;
+			return tableData[(int)section].type.Title;
 		}
 
 		/// <summary>
@@ -101,7 +202,7 @@ namespace TwoSplitTableViewExtended
 		public override void RowSelected (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			if (cellDidPress != null) {
-				cellDidPress (data[indexPath.Row]);
+				//cellDidPress (data[indexPath.Section].rows[indexPath.Row]);
 			}
 
 			tableView.DeselectRow (indexPath, true);

@@ -42,7 +42,8 @@ namespace TwoSplitTableViewExtended
 		/// The data for our bottom table.  We dont need data for our top table as the bottom table will provide
 		/// the necessary data for out top table. 
 		/// </summary>
-		private readonly List<string> dataSourceOne;
+		private readonly List<TableViewSection> dataSourceOne;
+		private readonly List<List<List<UIColor>>> dataSource;
 		private readonly List<string> dataSourceTwo;
 
 		//========================================================================================================================================
@@ -57,13 +58,17 @@ namespace TwoSplitTableViewExtended
 		/// </summary>
 		public ViewController () 
 		{
-			dataSourceOne = new List<string> () {
-				"Data Object One",
-				"Data Object Two",
-				"Data Object Three",
-				"Data Object Four",
-				"Data Object Five"
-			};
+//			dataSourceOne = new List<string> () {
+//				"Data Object One",
+//				"Data Object Two",
+//				"Data Object Three",
+//				"Data Object Four",
+//				"Data Object Five"
+//			};
+
+			dataSourceOne = buildBottomTableData ();
+
+			dataSource = new FakeDatabase ().getFakeData ();
 
 			dataSourceTwo = new List<string> () {
 				"Alternate Object One",
@@ -75,10 +80,16 @@ namespace TwoSplitTableViewExtended
 				
 
 
+
+
 			topSource 	= new TableViewSourceTop ();
-			bottomSource 	= new TableViewSourceBottom (dataSourceOne);
+			bottomSource 	= new TableViewSourceBottom (dataSourceOne, dataSource);
 			tableViewTop 	= new UITableView ();
 			tableViewBottom = new UITableView (CoreGraphics.CGRect.Empty, UITableViewStyle.Grouped);
+
+//			tableViewBottom.RegisterClassForCellReuse (typeof(UITableViewCellA), TableViewRowType.A.ReuseID);
+//			tableViewBottom.RegisterClassForCellReuse (typeof(UITableViewCellB), TableViewRowType.B.ReuseID);
+//			tableViewBottom.RegisterClassForCellReuse (typeof(UITableViewCellC), TableViewRowType.C.ReuseID);
 
 
 
@@ -174,6 +185,31 @@ namespace TwoSplitTableViewExtended
 			topSource.updateField (contents);
 			tableViewTop.ReloadData ();
 
+		}
+
+		private List<TableViewSection> buildBottomTableData()
+		{
+			List<TableViewSection> table = new List<TableViewSection>();
+			List<TableViewRow> rows = new List<TableViewRow> ();
+
+			rows.Add (new CellA ());
+			rows.Add (new CellA ());
+			rows.Add (new CellA ());
+			rows.Add (new CellB ());
+			rows.Add (new CellB ());
+			rows.Add (new CellB ());
+			rows.Add (new CellC ());
+			rows.Add (new CellC ());
+			rows.Add (new CellC ());
+
+			for (int x = 0; x < 3; x += 1) {
+				table.Add (new TableViewSection (TableViewSectionType.AllTypes[x]));
+				for (int y = 0; y < 3; y += 1) {
+					table [x].rows.Add (rows[y + (x*3)]);
+				}
+			}
+
+			return table;
 		}
 
 

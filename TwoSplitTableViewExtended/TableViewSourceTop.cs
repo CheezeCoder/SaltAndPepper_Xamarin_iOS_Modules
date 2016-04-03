@@ -4,34 +4,29 @@ using System.Collections.Generic;
 
 namespace TwoSplitTableViewExtended 
 {
-	///<summary>
-	/// Source for out Top Table View.
-	///</summary>
-	public class TableViewSourceTop : UITableViewSource
+	/// <summary>
+	/// Custom top table view cell.
+	/// </summary>
+	public class CustomTopTableViewCell : UITableViewCell
 	{
 		//========================================================================================================================================
-		//  PRIVATE CLASS PROPERTIES
+		//  PRIVATE CONST CLASS PROPERTIES
 		//========================================================================================================================================
-		/// <summary>
-		/// The data.
-		/// </summary>
-		private readonly List<string> data;
-		/// <summary>
-		/// Top table view cell unique identifier.
-		/// </summary>
-		private const string cellIdentifier 	= "inputCell";
-		/// <summary>
-		/// The data to display dependant on our bottom table.
-		/// </summary>
-		private string cellStateData 		=""; 
 		/// <summary>
 		/// Cell left padding to look good.
 		/// </summary>
 		private const float cellPadding 	= 15;
 		/// <summary>
+		/// Top table view cell unique identifier.
+		/// </summary>
+		public const string cellIdentifier	= "inputCell";
+		/// <summary>
 		/// Prefix for our only top table view cell.  Stays persisentent. 
 		/// </summary>
 		private const string cellPrefix 	= "Data Response: ";
+		//========================================================================================================================================
+		//  PRIVATE CLASS PROPERTIES
+		//========================================================================================================================================
 		/// <summary>
 		/// Label that hoses our cell prefix.
 		/// </summary>
@@ -40,6 +35,131 @@ namespace TwoSplitTableViewExtended
 		/// Lable that houses our data to display in the cell.
 		/// </summary>
 		private UILabel	cellDataLabel;
+		/// <summary>
+		/// The cell accessory detail.
+		/// </summary>
+		private UITableViewCellAccessory cellAccessoryDetail;
+		/// <summary>
+		/// The color of the cell text.
+		/// </summary>
+		private UIColor cellTextColor;
+		/// <summary>
+		/// The color of the inactive accessory.
+		/// </summary>
+		private UIColor inactiveAccessoryColor;
+		/// <summary>
+		/// The color of the active accessory.
+		/// </summary>
+		private UIColor activeAccessoryColor;
+		/// <summary>
+		/// The color of the cell prefix text.
+		/// </summary>
+		private UIColor cellPrefixTextColor;
+		/// <summary>
+		/// The prefix lable font.
+		/// </summary>
+		private UIFont prefixLableFont;
+		/// <summary>
+		/// The accessory is active.
+		/// </summary>
+		bool accessoryIsActive;
+		//========================================================================================================================================
+		//  PUBLIC CLASS PROPERTIES
+		//========================================================================================================================================
+		//========================================================================================================================================
+		//  Constructor
+		//========================================================================================================================================
+		/// <summary>
+		/// Initializes a new instance of the <see cref="TwoSplitTableViewExtended.CustomTopTableViewCell"/> class. Inits our labels
+		/// </summary>
+		public CustomTopTableViewCell(CoreGraphics.CGRect frame, string id) : base(UITableViewCellStyle.Default, string.IsNullOrEmpty(id) ? cellIdentifier : id)
+		{
+			prefixLableFont 	= UIFont.SystemFontOfSize (UIFont.SystemFontSize);
+			cellPrefixLabel 	= new UILabel (new CoreGraphics.CGRect (cellPadding, 0, getStringWidth (cellPrefix), frame.Height));
+			cellDataLabel 		= new UILabel (new CoreGraphics.CGRect (cellPrefixLabel.Frame.Width + (cellPadding * 2), 0, frame.Width - getStringWidth (cellPrefix), frame.Height));
+			cellAccessoryDetail 	= UITableViewCellAccessory.DetailButton;
+			cellTextColor 		= UIColor.Red;
+			inactiveAccessoryColor 	= UIColor.Blue;
+			activeAccessoryColor 	= UIColor.Green;
+			cellPrefixTextColor 	= UIColor.LightGray;
+
+			ContentView.AddSubviews(new UIView[]{cellPrefixLabel, cellDataLabel});
+		}
+		//========================================================================================================================================
+		//  PUBLIC OVERRIDES
+		//========================================================================================================================================
+		public override void LayoutSubviews ()
+		{
+			SeparatorInset 			= UIEdgeInsets.Zero;
+			LayoutMargins 			= UIEdgeInsets.Zero;
+			Accessory 			= cellAccessoryDetail;
+			TintColor 			= inactiveAccessoryColor;
+			cellDataLabel.TextColor 	= cellTextColor;
+			cellPrefixLabel.Font 		= prefixLableFont;
+			cellPrefixLabel.TextColor 	= cellPrefixTextColor;
+			cellPrefixLabel.Text 		= cellPrefix;
+
+
+			base.LayoutSubviews ();
+		}
+
+		//========================================================================================================================================
+		//  PUBLIC METHODS
+		//========================================================================================================================================
+		public void updateText(string contents)
+		{
+			this.cellDataLabel.Text = contents;
+		}
+
+		public void updateTint()
+		{
+			TintColor = accessoryIsActive ? activeAccessoryColor : inactiveAccessoryColor;
+			accessoryIsActive =! accessoryIsActive;
+		}
+		//========================================================================================================================================
+		//  PRIVATE METHODS
+		//========================================================================================================================================
+		private nfloat getStringWidth(string item)
+		{
+			return item.StringSize (prefixLableFont).Width;
+		}
+	}
+
+	///<summary>
+	/// Source for out Top Table View.
+	///</summary>
+	public class TableViewSourceTop : UITableViewSource
+	{
+		//========================================================================================================================================
+		//  PRIVATE CONST CLASS PROPERTIES
+		//========================================================================================================================================
+		/// <summary>
+		/// The width of the io default cell.
+		/// </summary>
+		private const float ioDefaultCellWidth = 320;
+		/// <summary>
+		/// The height of the io default cell.
+		/// </summary>
+		private const float ioDefaultCellHeight = 44;
+		/// <summary>
+		/// Top table view cell unique identifier.
+		/// </summary>
+		public const string cellIdentifier	= "inputCell";
+		//========================================================================================================================================
+		//  PRIVATE CLASS PROPERTIES
+		//========================================================================================================================================
+		/// <summary>
+		/// The data.
+		/// </summary>
+		private readonly List<string> data;
+		/// <summary>
+		/// The data to display dependant on our bottom table.
+		/// </summary>
+		private string cellStateData =""; 
+
+		/// <summary>
+		/// Occurs when will switch data.
+		/// </summary>
 		public event EventHandler willSwitchData;
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
@@ -52,8 +172,6 @@ namespace TwoSplitTableViewExtended
 		/// </summary>
 		public TableViewSourceTop ()
 		{	
-			cellPrefixLabel = new UILabel ();
-			cellDataLabel 	= new UILabel ();
 		}
 		//========================================================================================================================================
 		//  PUBLIC OVERRIDES
@@ -80,31 +198,9 @@ namespace TwoSplitTableViewExtended
 		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			var cell 		= tableView.DequeueReusableCell (cellIdentifier);
+			cell 			= cell ?? new CustomTopTableViewCell (new CoreGraphics.CGRect(0,0,ioDefaultCellWidth, ioDefaultCellHeight), cellIdentifier);
 
-			cell 			= cell ?? new UITableViewCell (UITableViewCellStyle.Default, cellIdentifier);
-			cell.SeparatorInset 	= UIEdgeInsets.Zero;
-			cell.LayoutMargins 	= UIEdgeInsets.Zero;
-
-			cell.Accessory = UITableViewCellAccessory.DetailButton;
-			cell.TintColor = UIColor.Blue;
-
-			var stringLength 	= cellPrefix.StringSize (UIFont.SystemFontOfSize (UIFont.SystemFontSize)).Width;
-
-			cellDataLabel.Text 	= cellStateData;
-			cellDataLabel.TextColor = UIColor.Red;
-
-			if (!cellPrefixLabel.IsDescendantOfView (cell)) {
-				cellPrefixLabel.Frame 		= new CoreGraphics.CGRect(cellPadding, 0, stringLength, cell.Bounds.Height);
-				cellPrefixLabel.Text 		= cellPrefix;
-				cellPrefixLabel.Font 		= UIFont.SystemFontOfSize(UIFont.SystemFontSize);
-				cellPrefixLabel.TextColor 	= UIColor.LightGray;
-				cell.AddSubview (cellPrefixLabel);
-			}
-
-			if (!cellDataLabel.IsDescendantOfView (cell)) {
-				cellDataLabel.Frame = new CoreGraphics.CGRect (cellPrefixLabel.Frame.Width + (cellPadding * 2), 0, cell.Frame.Width - stringLength, cell.Frame.Height);
-				cell.AddSubview (cellDataLabel);
-			}
+			if((cell as CustomTopTableViewCell) != null) (cell as CustomTopTableViewCell).updateText (cellStateData);
 
 			return cell;
 		}
@@ -138,10 +234,7 @@ namespace TwoSplitTableViewExtended
 			if (willSwitchData != null) {
 				willSwitchData (this, EventArgs.Empty);
 			}
-
-			var tColor = tableView.CellAt (indexPath).TintColor;
-		
-			tableView.CellAt (indexPath).TintColor = tColor == UIColor.Blue ? UIColor.Red : UIColor.Blue;
+			if((tableView.CellAt (indexPath) as CustomTopTableViewCell) != null) (tableView.CellAt (indexPath) as CustomTopTableViewCell).updateTint ();
 		}
 		//========================================================================================================================================
 		//  PRIVATE METHODS
