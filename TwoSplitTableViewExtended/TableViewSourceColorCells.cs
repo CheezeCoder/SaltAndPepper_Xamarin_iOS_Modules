@@ -5,104 +5,15 @@ using System.Globalization;
 
 namespace TwoSplitTableViewExtended 
 {
-	public struct TableViewRowType{
-		public static TableViewRowType A = new TableViewRowType ("cellTypeA", "typeA");
-		public static TableViewRowType B = new TableViewRowType ("cellTypeB", "typeB");
-		public static TableViewRowType C = new TableViewRowType ("cellTypeC", "typeC");
-
-		public static List<TableViewRowType> AllTypes = new List<TableViewRowType>(){A, B, C};
-
-		private TableViewRowType (string id, string key)
-		{
-			ReuseID = id;
-			Key = key;
-		}
-
-		public string ReuseID { get; set; }
-		public string Key { get; set; }
-	}
-
-//	public class TableViewRowType{
-//
-//		public static TableViewRowType A = new TableViewRowType ("cellTypeA", "typeA");
-//		public static TableViewRowType B = new TableViewRowType ("cellTypeB", "typeB");
-//		public static TableViewRowType C = new TableViewRowType ("cellTypeC", "typeC");
-//
-//		private TableViewRowType (string id, string key)
-//		{
-//			ReuseID = id;
-//			Key = key;
-//		}
-//
-//		public string ReuseID { get; set; }
-//		public string Key { get; set; }
-//	}
-
-	public class TableViewSectionType{
-		public static TableViewSectionType A = new TableViewSectionType("Setion A", "sectionTypeA");
-		public static TableViewSectionType B = new TableViewSectionType("Setion B", "sectionTypeB");
-		public static TableViewSectionType C = new TableViewSectionType("Setion C", "sectionTypeC");
-
-		public static List<TableViewSectionType> AllTypes = new List<TableViewSectionType>(){A, B, C};
-
-		private TableViewSectionType(string title, string key)
-		{
-			Key = key;
-			Title = title;
-		}
-
-		public string Key {get; set;}
-		public string Title{get; set;}
-	}
-
-
-	public struct TableViewSection {
-		public TableViewSectionType type;
-		public List<TableViewRow> rows;
-
-		public TableViewSection(TableViewSectionType t)
-		{
-			type = t;
-			rows = new List<TableViewRow> ();
-		}
-	}
-
-	public abstract class TableViewRow : UITableViewCell
-	{
-		private UITableViewCell cell;
-		private TableViewRowType type;
-
-		public TableViewRow(TableViewRowType type)
-		{
-			this.type = type;
-			ContentView.Frame = DefaultiOSDimensions.CellFrame ();
-		}
-
-		public TableViewRowType Type{
-			get{return type;}
-		}
-
-		public UITableViewCell Cell {
-			get { return cell; }
-			protected set{
-				cell = value;
-			}
-		}
-
-		public abstract void SetColor(UIColor c1, UIColor c2 = null, UIColor c3 = null);
-	}
-
-
-
 	/// <summary>
 	/// Delgate for our cell interaction.  Allows the string contents of the selected cell to be passed to a receiving 
 	/// method.  In this case the parent View Controller for the Table View this source belongs to.  
 	/// </summary>
-	public delegate void cellContentsHandler (string contents);
+	public delegate void cellContentsHandler (int row, int section);
 	///<summary>
 	/// Our Source class for the bottom table view.
 	///</summary>
-	public class TableViewSourceBottom : UITableViewSource
+	public class TableViewSourceColorCells : UITableViewSource
 	{
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
@@ -110,8 +21,7 @@ namespace TwoSplitTableViewExtended
 		/// <summary>
 		/// The data.
 		/// </summary>
-		private readonly List<TableViewSection> tableData;
-		private List<List<List<UIColor>>> data;
+		private readonly List<TableViewSection> tableStructureData;
 		/// <summary>
 		/// Bottom table view cell unique identifier.
 		/// </summary>
@@ -123,7 +33,13 @@ namespace TwoSplitTableViewExtended
 		/// <summary>
 		/// Occurs when cell is pressed.
 		/// </summary>
-		public event cellContentsHandler cellDidPress;
+		public event cellContentsHandler colorCellDidPress;
+		/// <summary>
+		/// Reference to our Color Row Repository.  Normally if we were using a proper database we could just instanciate this
+		/// repo here but for the purpose of this example this instance is a reference to the repo in ViewController and this is
+		/// set in the constructor here.
+		/// </summary>
+		private FakeColorRowRepository repo;
 
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
@@ -132,12 +48,12 @@ namespace TwoSplitTableViewExtended
 		//  Constructor
 		//========================================================================================================================================
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TwoSplitTableViewExtended.TableViewSourceBottom"/> class. Sets our data.
+		/// Initializes a new instance of the <see cref="TwoSplitTableViewExtended.TableViewSourceColorCells"/> class. Sets our data.
 		/// </summary>
-		public TableViewSourceBottom (List<TableViewSection> tData, List<List<List<UIColor>>> data)
+		public TableViewSourceColorCells (List<TableViewSection> tableLayoutData, FakeColorRowRepository repo)
 		{	
-			this.tableData = tData;
-			this.data = data;
+			this.tableStructureData = tableLayoutData;
+			this.repo = repo;
 		}
 		//========================================================================================================================================
 		//  PUBLIC OVERRIDES
@@ -145,33 +61,38 @@ namespace TwoSplitTableViewExtended
 		#region implemented abstract members of UITableViewSource
 
 		/// <summary>
-		/// Nothing to special here. Sets the data from our data source to each cell value as a label.
+		/// Uses our TableViewSection and TableViewRow structure to get the correct cell if it is dequeuable which it always should be as we instanciate
+		/// all of the cells for our ColorCellSource view in the repo helper method.  The cells should all be ready to be therefore deqeued.  It would 
+		/// normally probably be a good idea to check and make sure the cell is there anyways in production code.  The cell is then cast as a 
+		/// TableViewRow and we set its state based on what the database has stored for the particular cell index.  
 		/// </summary>
 		/// <returns>The cell.</returns>
 		/// <param name="tableView">Table view.</param>
 		/// <param name="indexPath">Index path.</param>
 		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
-			var cell = tableView.DequeueReusableCell (tableData [indexPath.Section].rows [indexPath.Row].Type.ReuseID) ?? tableData [indexPath.Section].rows [indexPath.Row].Cell;
+			var cell = tableView.DequeueReusableCell (tableStructureData [indexPath.Section].rows [indexPath.Row].Type.ReuseID) ?? tableStructureData [indexPath.Section].rows [indexPath.Row].Cell;
 
-			var c1 = data [indexPath.Section] [indexPath.Row] [0];
-			var c2 = data [indexPath.Section] [indexPath.Row].Count > 1 ? data [indexPath.Section] [indexPath.Row] [1] : null;
-			var c3 = data [indexPath.Section] [indexPath.Row].Count > 2 ? data [indexPath.Section] [indexPath.Row] [2] : null;
-
-			if (cell is TableViewRow) {
-				(cell as TableViewRow).SetColor (c1, c2, c3);
+			var tableViewRow = cell as TableViewRow;
+			if (tableViewRow != null) {
+				tableViewRow.SetState (repo.All()[indexPath.Section][indexPath.Row]);
 			}
 
 			return cell;
 		}
 
+		/// <summary>
+		/// Number of sections.
+		/// </summary>
+		/// <returns>The of sections.</returns>
+		/// <param name="tableView">Table view.</param>
 		public override nint NumberOfSections (UITableView tableView)
 		{
-			return tableData.Count;
+			return tableStructureData.Count;
 		}
 
 		/// <summary>
-		/// Rows the in section.
+		/// Rows in the section
 		/// </summary>
 		/// <returns>The in section.</returns>
 		/// <param name="tableview">Tableview.</param>
@@ -179,31 +100,43 @@ namespace TwoSplitTableViewExtended
 		public override nint RowsInSection (UITableView tableview, nint section)
 		{
 			int s = (int)section;
-			return tableData[s].rows.Count;
+			return tableStructureData[s].rows.Count;
 		}
 
+
+
 		/// <summary>
-		/// Title for header.
+		/// Title for the header for this section.  
 		/// </summary>
 		/// <returns>The for header.</returns>
 		/// <param name="tableView">Table view.</param>
 		/// <param name="section">Section.</param>
 		public override string TitleForHeader (UITableView tableView, nint section)
 		{
-			return tableData[(int)section].type.Title;
+			return tableStructureData[(int)section].type.Title;
 		}
 
 		/// <summary>
 		/// This will check to make sure our event has subscribers and if so fires our event 
-		/// with whatever text is in our targeted table cell.  Deselects the row.
+		/// letting any listeners handle its event.  In this case the view controller handles
+		/// updating the state of the cell and consequently its label color.  Deselects the row.
 		/// </summary>
 		/// <param name="tableView">Table view.</param>
 		/// <param name="indexPath">Index path.</param>
 		public override void RowSelected (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
-			if (cellDidPress != null) {
-				//cellDidPress (data[indexPath.Section].rows[indexPath.Row]);
+			if (colorCellDidPress != null) {
+				colorCellDidPress (indexPath.Row, indexPath.Section);
 			}
+
+//			var cell = tableView.DequeueReusableCell (tableData [indexPath.Section].rows [indexPath.Row].Type.ReuseID) ?? tableData [indexPath.Section].rows [indexPath.Row].Cell;
+//
+//			if (cell != null) {
+//				var tvr = cell as TableViewRow;
+//				if (tvr != null) {
+//					tvr.SwitchState ();
+//				}
+//			}
 
 			tableView.DeselectRow (indexPath, true);
 		}

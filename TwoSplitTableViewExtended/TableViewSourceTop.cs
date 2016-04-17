@@ -10,12 +10,8 @@ namespace TwoSplitTableViewExtended
 	public class CustomTopTableViewCell : UITableViewCell
 	{
 		//========================================================================================================================================
-		//  PRIVATE CONST CLASS PROPERTIES
+		//  CONST CLASS PROPERTIES
 		//========================================================================================================================================
-		/// <summary>
-		/// Cell left padding to look good.
-		/// </summary>
-		private const float cellPadding 	= 15;
 		/// <summary>
 		/// Top table view cell unique identifier.
 		/// </summary>
@@ -27,6 +23,10 @@ namespace TwoSplitTableViewExtended
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
+		/// <summary>
+		/// The prefix lable font.
+		/// </summary>
+		private readonly UIFont prefixLableFont;
 		/// <summary>
 		/// Label that hoses our cell prefix.
 		/// </summary>
@@ -56,13 +56,9 @@ namespace TwoSplitTableViewExtended
 		/// </summary>
 		private UIColor cellPrefixTextColor;
 		/// <summary>
-		/// The prefix lable font.
-		/// </summary>
-		private UIFont prefixLableFont;
-		/// <summary>
 		/// The accessory is active.
 		/// </summary>
-		bool accessoryIsActive;
+		private bool accessoryIsActive;
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -75,8 +71,8 @@ namespace TwoSplitTableViewExtended
 		public CustomTopTableViewCell(CoreGraphics.CGRect frame, string id) : base(UITableViewCellStyle.Default, string.IsNullOrEmpty(id) ? cellIdentifier : id)
 		{
 			prefixLableFont 	= UIFont.SystemFontOfSize (UIFont.SystemFontSize);
-			cellPrefixLabel 	= new UILabel (new CoreGraphics.CGRect (cellPadding, 0, getStringWidth (cellPrefix), frame.Height));
-			cellDataLabel 		= new UILabel (new CoreGraphics.CGRect (cellPrefixLabel.Frame.Width + (cellPadding * 2), 0, frame.Width - getStringWidth (cellPrefix), frame.Height));
+			cellPrefixLabel 	= new UILabel (new CoreGraphics.CGRect (DefaultiOSDimensions.cellPadding, 0, getStringWidth (cellPrefix), frame.Height));
+			cellDataLabel 		= new UILabel (new CoreGraphics.CGRect (cellPrefixLabel.Frame.Width + (DefaultiOSDimensions.cellPadding * 2), 0, frame.Width - getStringWidth (cellPrefix), frame.Height));
 			cellAccessoryDetail 	= UITableViewCellAccessory.DetailButton;
 			cellTextColor 		= UIColor.Red;
 			inactiveAccessoryColor 	= UIColor.Blue;
@@ -88,6 +84,10 @@ namespace TwoSplitTableViewExtended
 		//========================================================================================================================================
 		//  PUBLIC OVERRIDES
 		//========================================================================================================================================
+		/// <summary>
+		/// Sets our insets to zero for proper display of the cell as well as sets some of the properties for this cell 
+		/// such as its accessory color, text and font colors.
+		/// </summary>
 		public override void LayoutSubviews ()
 		{
 			SeparatorInset 			= UIEdgeInsets.Zero;
@@ -106,11 +106,18 @@ namespace TwoSplitTableViewExtended
 		//========================================================================================================================================
 		//  PUBLIC METHODS
 		//========================================================================================================================================
+		/// <summary>
+		/// Updates the text of the cell.  Used in this case to allow the view controller to pass in a new label to be displayed.
+		/// </summary>
+		/// <param name="contents">Contents.</param>
 		public void updateText(string contents)
 		{
 			this.cellDataLabel.Text = contents;
 		}
 
+		/// <summary>
+		/// Updates the tint color of the accessory every time it is clicked.
+		/// </summary>
 		public void updateTint()
 		{
 			TintColor = accessoryIsActive ? activeAccessoryColor : inactiveAccessoryColor;
@@ -119,6 +126,11 @@ namespace TwoSplitTableViewExtended
 		//========================================================================================================================================
 		//  PRIVATE METHODS
 		//========================================================================================================================================
+		/// <summary>
+		/// Gets the width of a given string based on the preset font in prefixLabelFont.
+		/// </summary>
+		/// <returns>The string width.</returns>
+		/// <param name="item">Item.</param>
 		private nfloat getStringWidth(string item)
 		{
 			return item.StringSize (prefixLableFont).Width;
@@ -134,24 +146,12 @@ namespace TwoSplitTableViewExtended
 		//  PRIVATE CONST CLASS PROPERTIES
 		//========================================================================================================================================
 		/// <summary>
-		/// The width of the io default cell.
-		/// </summary>
-		private const float ioDefaultCellWidth = 320;
-		/// <summary>
-		/// The height of the io default cell.
-		/// </summary>
-		private const float ioDefaultCellHeight = 44;
-		/// <summary>
 		/// Top table view cell unique identifier.
 		/// </summary>
 		public const string cellIdentifier	= "inputCell";
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
-		/// <summary>
-		/// The data.
-		/// </summary>
-		private readonly List<string> data;
 		/// <summary>
 		/// The data to display dependant on our bottom table.
 		/// </summary>
@@ -160,7 +160,7 @@ namespace TwoSplitTableViewExtended
 		/// <summary>
 		/// Occurs when will switch data.
 		/// </summary>
-		public event EventHandler willSwitchData;
+		public event EventHandler willSwitchBottomTableData;
 		//========================================================================================================================================
 		//  PUBLIC CLASS PROPERTIES
 		//========================================================================================================================================
@@ -198,8 +198,7 @@ namespace TwoSplitTableViewExtended
 		public override UITableViewCell GetCell (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
 			var cell 		= tableView.DequeueReusableCell (cellIdentifier);
-			cell 			= cell ?? new CustomTopTableViewCell (new CoreGraphics.CGRect(0,0,ioDefaultCellWidth, ioDefaultCellHeight), cellIdentifier);
-
+			cell 			= cell ?? new CustomTopTableViewCell (new CoreGraphics.CGRect(0,0,DefaultiOSDimensions.cellWidth, DefaultiOSDimensions.cellHeight), cellIdentifier);
 			if((cell as CustomTopTableViewCell) != null) (cell as CustomTopTableViewCell).updateText (cellStateData);
 
 			return cell;
@@ -229,10 +228,17 @@ namespace TwoSplitTableViewExtended
 			cellStateData = contents;
 		}
 
+		/// <summary>
+		/// Delegate for the accessory button being tapped.  Switches the color and broadcasts the event using our event wilSwitchBottomTableData.
+		/// In this example this is specifically used to let the view controller know to switch out the bottom table view source for the bottom table
+		/// view.
+		/// </summary>
+		/// <param name="tableView">Table view.</param>
+		/// <param name="indexPath">Index path.</param>
 		public override void AccessoryButtonTapped (UITableView tableView, Foundation.NSIndexPath indexPath)
 		{
-			if (willSwitchData != null) {
-				willSwitchData (this, EventArgs.Empty);
+			if (willSwitchBottomTableData != null) {
+				willSwitchBottomTableData (this, EventArgs.Empty);
 			}
 			if((tableView.CellAt (indexPath) as CustomTopTableViewCell) != null) (tableView.CellAt (indexPath) as CustomTopTableViewCell).updateTint ();
 		}

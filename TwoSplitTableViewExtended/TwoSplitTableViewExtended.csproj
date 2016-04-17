@@ -92,12 +92,15 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="NavigationController.cs" />
-    <Compile Include="TableViewSoureBottom.cs" />
     <Compile Include="TableViewSourceTop.cs" />
     <Compile Include="ViewController.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FakeDatabase.cs" />
-    <Compile Include="UITableViewCellC.cs" />
+    <Compile Include="CellVisualData.cs" />
+    <Compile Include="TableViewSourceColorCells.cs" />
+    <Compile Include="FakeRepository.cs" />
+    <Compile Include="TableViewSourceSelectableObjects.cs" />
+    <Compile Include="UITableViewCells.cs" />
+    <Compile Include="UITableViewStrucutre.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
