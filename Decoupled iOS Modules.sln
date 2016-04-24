@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoSplitTableView", "TwoSpl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoSplitTableViewExtended", "TwoSplitTableViewExtended\TwoSplitTableViewExtended.csproj", "{7A000128-82A4-421F-B5A8-15E9D9FE03FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactPicker", "ContactPicker\ContactPicker.csproj", "{30D10A97-6A58-4A5A-8824-999F6F7407D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -41,6 +43,14 @@ Global
 		{206A62D9-4442-410F-8867-2854D6DFDF81}.Release|iPhone.Build.0 = Release|iPhone
 		{206A62D9-4442-410F-8867-2854D6DFDF81}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{206A62D9-4442-410F-8867-2854D6DFDF81}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Debug|iPhone.Build.0 = Debug|iPhone
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Release|iPhone.ActiveCfg = Release|iPhone
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Release|iPhone.Build.0 = Release|iPhone
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{30D10A97-6A58-4A5A-8824-999F6F7407D0}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Debug|iPhone.Build.0 = Debug|iPhone
 		{5A2581DE-63CF-4F14-A279-97BD92DC2785}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
