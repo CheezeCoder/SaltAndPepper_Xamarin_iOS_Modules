@@ -1,7 +1,8 @@
 ﻿using Foundation;
 using UIKit;
+using Contacts;
 
-namespace ContactPicker
+namespace ContactPicker  
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the
 	// User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
@@ -16,6 +17,17 @@ namespace ContactPicker
 		}
 
 		/// <summary>
+		/// Allows us to get a global reference to the app delegate in a short form from anywhere in the applicaiton.
+		/// </summary>
+		/// <value>The self.</value>
+		public static AppDelegate Self { get; private set;}
+
+		/// <summary>
+		/// An authorization class that seperates the logic for requesting authorization to the Contacts of a user.
+		/// </summary>
+		public AccessAuth auth;
+
+		/// <summary>
 		/// Sets the main background color.  Here we programatically add a new instance of our subclassed 
 		/// UINavigationController to the window root view controller property.  We then have to call
 		/// the MakeKeyAndVisible method on window for it to load properly.  
@@ -25,9 +37,12 @@ namespace ContactPicker
 		/// <param name="launchOptions">Launch options.</param>
 		public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
 		{
-			Window 						= new UIWindow (UIScreen.MainScreen.Bounds);
-			this.Window.BackgroundColor = UIColor.White;
-			var nc 						= new NavigationController();
+			Window 				= new UIWindow (UIScreen.MainScreen.Bounds);
+
+			AppDelegate.Self 		= this;
+			auth 				= new AccessAuth ();
+			this.Window.BackgroundColor 	= UIColor.White;
+			var nc 				= new NavigationController();
 			Window.RootViewController 	= nc;
 
 			Window.MakeKeyAndVisible ();
@@ -65,6 +80,21 @@ namespace ContactPicker
 		{
 			// Called when the application is about to terminate. Save data, if needed. See also DidEnterBackground.
 		}
+
+		/// <summary>
+		/// Runs a check to see if the user has granted access to the Contacts of a users device or not.
+		/// </summary>
+		/// <returns><c>true</c>, if contacts auth was granted, <c>false</c> otherwise.</returns>
+		public bool checkContactsAuth()
+		{
+			return auth.requestContactsAccess ();
+		}
+
+
+
+
+
+
 	}
 }
 

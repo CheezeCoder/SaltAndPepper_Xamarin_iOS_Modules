@@ -95,9 +95,14 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="NavigationController.cs" />
+    <Compile Include="CellVisualData.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="FakeRepository.cs" />
+    <Compile Include="TableViewSourceSelectableObjects.cs" />
+    <Compile Include="TableViewSourceTop.cs" />
+    <Compile Include="ViewController.cs" />
+    <Compile Include="AccessAuth.cs" />
+    <Compile Include="AccessDeniedVC.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <ItemGroup>
-    <BundleResource Include="Resources\ViewController.cs" />
-  </ItemGroup>
 </Project>

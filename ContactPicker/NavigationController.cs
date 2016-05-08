@@ -1,8 +1,7 @@
 ﻿using System;
 using UIKit;
-using DeviceDimensions;
 
-namespace ContactPicker 
+namespace ContactPicker
 {
 	///<summary>
 	/// Navigation Controller controlls the ViewControllers which in this case there is only one.  So all we need to do is initiate the 
@@ -13,6 +12,7 @@ namespace ContactPicker
 		//========================================================================================================================================
 		//  PRIVATE CLASS PROPERTIES
 		//========================================================================================================================================
+
 		/// <summary>
 		/// The view controller housing our UITableViews.
 		/// </summary>
@@ -24,7 +24,7 @@ namespace ContactPicker
 		//  Constructor
 		//========================================================================================================================================
 		/// <summary>
-		/// Initializes a new instance of the <see cref="TwoSplitTableViewExtended.NavigationController"/> class.
+		/// Initializes a new instance of the <see cref="ContactPicker.NavigationController"/> class.
 		/// </summary>
 		public NavigationController ()
 		{
@@ -40,7 +40,6 @@ namespace ContactPicker
 		public override void ViewDidLoad ()
 		{
 			SetViewControllers (new UIViewController[]{ viewController }, true);
-
 
 			base.ViewDidLoad ();
 		}
